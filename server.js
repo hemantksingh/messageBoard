@@ -6,18 +6,22 @@ var express = require("express");
 
 	res.end();
 });*/
+
+var controllers = require("./controllers")
 var app = express();
 //console.log(__dirname + '\\views');
 //app.set("view engine", "jade");
 app.set("view engine", "vash");
 
+controllers.init(app);
+/*
 app.get("/", function(req, res){
 	//res.send("<html><body><h1>" + "Express!!!" +"</h1></body></html>")
 
 	// By default the views folder is looked up for the view.
 	// res.render("jade/index", {title: "Express with Jade"});
 	res.render("index", {title: "Express with vash"});
-});
+});*/
 
 app.get("/api/users", function(req, res) {
 	res.set("Content-Type", "application/json");
