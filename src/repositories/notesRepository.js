@@ -32,9 +32,13 @@ function notesRepository() {
 				color: "green"
 			}]
 		}];
+		
+		callback(null, notes);
+	}
 
-		return notes;
-	}	
+	return {
+		getNoteCategories: getNoteCategories
+	};	
 }
 
 module.exports = notesRepository;
