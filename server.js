@@ -7,12 +7,13 @@ var express = require("express");
 	res.end();
 });*/
 
-var controllers = require("./controllers")
+var controllers = require("./src/controllers")
 var app = express();
 //console.log(__dirname + '\\views');
 //app.set("view engine", "jade");
 app.set("view engine", "vash");
-
+// public static resources.
+app.use(express.static(__dirname + "/public"));
 controllers.init(app);
 /*
 app.get("/", function(req, res){
