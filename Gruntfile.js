@@ -16,6 +16,14 @@ module.exports = function(grunt) {
         dest: 'dist/',
         expand: true
       }
+    },
+    nodemon: {
+      all: {
+        script: 'server.js',
+        options: {
+          watchedExtensions: ['js']
+        }
+      }
     }
   });
 
@@ -23,6 +31,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-rework');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-nodemon');
 
-  grunt.registerTask('default', ['clean', 'browserify', 'rework', 'copy']);
+  grunt.registerTask('default', ['clean', 'browserify', 'rework', 'copy', 'nodemon']);
 };
