@@ -2,9 +2,24 @@
 <html>
 <head>
 	<title>@model.title</title>
-	<link rel="stylesheet" type="text/css" href="/css/site.css">
+	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="/css/site.css">
+
 </head>
 <body>
-	<div>@html.block("body")</div>
+	<section id = "body" class = "container">
+		<div class="page-header">
+			<h1>@model.title</h1>
+		</div>
+		@html.block("body")
+	</section>
+	<hr />
+	<footer class="container">
+		<p>The Board</p>
+	</footer>
+	<script src = "/lib/jquery/dist/jquery.min.js"></script>
+	<script src = "/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src = "/lib/underscore/underscore.js"></script>
 </body>
 </html>
