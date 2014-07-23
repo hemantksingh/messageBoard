@@ -1,7 +1,8 @@
 function homeController (app, notesRepository) {
 	
 	function init() {
-		app.get("/", function(req, res) {
+		notesRepository.seedDatabase();
+		app.get("/", function(req, res) {1
 			notesRepository.getNoteCategories(function(err, results) {
 				res.render("index", {
 					title: "Express with Vash!!",

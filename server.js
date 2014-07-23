@@ -2,9 +2,16 @@ var http = require("http");
 var express = require("express");
 var notesRepository = require("./src/repositories/notesRepository");
 var homeController = require("./src/controllers/homeController");
+var seedData = require("./src/seedData");
+var mongodb = require("mongodb");
+var database = require("./src/database");
+
+var dbUrl = "mongodb://localhost:27017/messageBoard";
 
 var app = initialiseApp();
-var controller = homeController(app, notesRepository());
+var controller = homeController(
+	app, 
+	notesRepository(database(mongodb, dbUrl), seedData()));
 controller.init();
 
 var server = http.createServer(app);
