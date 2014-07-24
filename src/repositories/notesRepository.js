@@ -44,9 +44,37 @@ function notesRepository(database, seedData) {
 		});
 	}
 
+	function createCategory(categoryName, callback) {
+		database.getDb(function(err, db) {
+			if(err) {
+				callback(err);
+			} else {
+				db.notes.find({name: categoryName}).count(function(err, count) {
+					if(err) {
+						callback(err);
+					} else {
+						if(count !== 0) {
+							callback("Category name '" + categoryName + "' already exists.");
+						} else {
+							var category = {name: categoryName, notes: []};
+							db.notes.insert(category, function(err) {
+								if(err) {
+									callback(err);
+								} else {
+									callback(null);
+								}
+							});
+						}
+					}
+				});
+			}
+		});
+	}
+
 	return {
 		seedDatabase : seedDatabase,
-		getNoteCategories: getNoteCategories
+		getNoteCategories: getNoteCategories,
+		createCategory: createCategory
 	};
 }
 

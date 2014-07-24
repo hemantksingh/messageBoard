@@ -1,5 +1,8 @@
 var http = require("http");
 var express = require("express");
+var bodyParser = require('body-parser');
+var flash = require('connect-flash');
+var cookieSession = require('cookie-session');
 var notesRepository = require("./src/repositories/notesRepository");
 var homeController = require("./src/controllers/homeController");
 var seedData = require("./src/seedData");
@@ -16,15 +19,26 @@ controller.init();
 
 var server = http.createServer(app);
 // port 80 is a public facing web server.
-server.listen(3000);
+server.listen(3000); 
 console.log("Server started at port:3000");
 
 
 function initialiseApp() {
 	var app = express();
+	
 	//app.set("view engine", "jade");
 	app.set("view engine", "vash");
-	// public static resources.
+
+	// Allow parsing urlencoded request bodies into req.body
+	app.use(bodyParser.urlencoded());
+
+	// Store session state in browser cookie. Session state is encrypted with 
+	// a secret key which ensures the session state can be decrypted only with the
+	// secret key.
+	app.use(cookieSession({keys: ['secret1', 'secret2']}));
+	app.use(flash());
+
+	// Public static resources.
 	app.use(express.static(__dirname + "/public"));
 
 	/*app.get("/", function(req, res){

@@ -7,10 +7,26 @@ function homeController (app, notesRepository) {
 				res.render("index", {
 					title: "Express with Vash!!",
 					error: err,
-					categories: results
+					categories: results,
+					newCatError: req.flash("newCatErr")
 				});
 			});
-		});	
+		});
+
+		app.post("/newCategory", function(req, res) {
+			var categoryName = req.body.categoryName;
+
+			notesRepository.createCategory(categoryName, function(err) {
+				if(err) {
+					console.log(err);
+					req.flash("newCatErr", err);
+					res.redirect("/");
+				} else {
+					res.redirect("/");
+					//res.redirect("/notes/"+categoryName);
+				}
+			})
+		})
 	}
 
 	return {init: init};
