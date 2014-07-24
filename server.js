@@ -30,7 +30,7 @@ function initialiseApp() {
 	app.set("view engine", "vash");
 
 	// Allow parsing urlencoded request bodies into req.body
-	app.use(bodyParser.urlencoded());
+	app.use(bodyParser.urlencoded({extended: true}));
 
 	// Store session state in browser cookie. Session state is encrypted with 
 	// a secret key which ensures the session state can be decrypted only with the
