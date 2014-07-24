@@ -5,6 +5,7 @@ var flash = require('connect-flash');
 var cookieSession = require('cookie-session');
 var notesRepository = require("./src/repositories/notesRepository");
 var homeController = require("./src/controllers/homeController");
+var notesController = require("./src/controllers/notesController");
 var seedData = require("./src/seedData");
 var mongodb = require("mongodb");
 var database = require("./src/database");
@@ -12,10 +13,13 @@ var database = require("./src/database");
 var dbUrl = "mongodb://localhost:27017/messageBoard";
 
 var app = initialiseApp();
-var controller = homeController(
+homeController(
 	app, 
-	notesRepository(database(mongodb, dbUrl), seedData()));
-controller.init();
+	notesRepository(database(mongodb, dbUrl), seedData())).init();
+
+notesController(
+	app,
+	notesRepository(database(mongodb, dbUrl), seedData())).init();
 
 var server = http.createServer(app);
 // port 80 is a public facing web server.
@@ -31,6 +35,7 @@ function initialiseApp() {
 
 	// Allow parsing urlencoded request bodies into req.body
 	app.use(bodyParser.urlencoded({extended: true}));
+	app.use(bodyParser.json());
 
 	// Store session state in browser cookie. Session state is encrypted with 
 	// a secret key which ensures the session state can be decrypted only with the

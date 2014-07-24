@@ -18,6 +18,28 @@ function notesRepository(database, seedData) {
 		
 	}
 
+	function getNotes(categoryName, callback) {
+		database.getDb(function(err, db) {
+			if(err) {
+				callback(err);
+			} else {
+				db.notes.findOne({name: categoryName}, callback);
+			}
+		});
+	}
+
+	function addNote(categoryName, noteToAdd, callback) {
+		database.getDb(function(err, db) {
+			if(err) {
+				callback(err);
+			} else {
+				db.notes.update({name: categoryName}, 
+					{$push: {notes: noteToAdd}}, 
+					callback);
+			}
+		});
+	}
+
 	function seedDatabase() {
 		database.getDb(function(err, db) {
 			if(err) {
@@ -74,6 +96,8 @@ function notesRepository(database, seedData) {
 	return {
 		seedDatabase : seedDatabase,
 		getNoteCategories: getNoteCategories,
+		getNotes: getNotes,
+		addNote: addNote,
 		createCategory: createCategory
 	};
 }
