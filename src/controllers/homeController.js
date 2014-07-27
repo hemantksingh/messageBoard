@@ -2,7 +2,7 @@ function homeController (app, notesRepository) {
 	
 	function init() {
 		notesRepository.seedDatabase();
-		app.get("/", function(req, res) {1
+		app.get("/", function(req, res) {
 			notesRepository.getNoteCategories(function(err, results) {
 				res.render("index", {
 					title: "Express with Vash!!",
@@ -11,6 +11,11 @@ function homeController (app, notesRepository) {
 					newCatError: req.flash("newCatErr")
 				});
 			});
+		});
+
+		app.get("/notes/:categoryName", function(req, res) {
+			var categoryName = req.params.categoryName;
+			res.render("notes", {title: categoryName});
 		});
 
 		app.post("/newCategory", function(req, res) {
@@ -22,8 +27,8 @@ function homeController (app, notesRepository) {
 					req.flash("newCatErr", err);
 					res.redirect("/");
 				} else {
-					res.redirect("/");
-					//res.redirect("/notes/"+categoryName);
+					//res.redirect("/");
+					res.redirect("/notes/"+categoryName);
 				}
 			})
 		})
