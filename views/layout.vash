@@ -4,6 +4,8 @@
 	<title>@model.title</title>
 	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap-theme.min.css">
+	<!--Include external libraries in the head that can be overridden by the site css. -->
+	@html.block("head")
 	<link rel="stylesheet" href="/css/site.css">
 
 </head>
@@ -33,7 +35,7 @@
 	<section id = "body" class = "container">
 		<div class="page-header">
 			<h1>@model.title</h1>
-		</div>
+		</div> 
 		@html.block("body")
 	</section>
 	<hr />
@@ -43,5 +45,9 @@
 	<script src = "/lib/jquery/dist/jquery.min.js"></script>
 	<script src = "/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src = "/lib/underscore/underscore.js"></script>
+	<script src = "/lib/angular/angular.min.js"></script>
+	<script src = "/lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+	<!-- Page or view specific scripts to be loaded after all the standard libraries. -->
+	@html.block("scripts") 
 </body>
 </html>
