@@ -5,6 +5,7 @@ var flash = require('connect-flash');
 var cookieSession = require('cookie-session');
 var notesRepository = require("./src/repositories/notesRepository");
 var homeController = require("./src/controllers/homeController");
+var registrationController = require("./src/controllers/registrationController");
 var notesController = require("./src/controllers/notesController");
 var seedData = require("./src/seedData");
 var mongodb = require("mongodb");
@@ -13,6 +14,8 @@ var database = require("./src/database");
 var dbUrl = "mongodb://localhost:27017/messageBoard";
 
 var app = initialiseApp();
+
+registrationController(app).init();
 homeController(
 	app, 
 	notesRepository(database(mongodb, dbUrl), seedData())).init();
@@ -20,6 +23,8 @@ homeController(
 notesController(
 	app,
 	notesRepository(database(mongodb, dbUrl), seedData())).init();
+
+
 
 var server = http.createServer(app);
 // port 80 is a public facing web server.
