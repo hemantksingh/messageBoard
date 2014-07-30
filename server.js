@@ -3,25 +3,36 @@ var express = require("express");
 var bodyParser = require('body-parser');
 var flash = require('connect-flash');
 var cookieSession = require('cookie-session');
+var seedData = require("./src/seedData");
+var mongodb = require("mongodb");
+var crypto = require("crypto");
+var passport = require("passport");
+var localStrategy = require("passport-local").Strategy;
+var hasher = require("./src/hasher");
+var database = require("./src/database");
+var authorisation = require("./src/authorisation");
 var notesRepository = require("./src/repositories/notesRepository");
 var userRepository = require("./src/repositories/userRepository");
 var homeController = require("./src/controllers/homeController");
 var registrationController = require("./src/controllers/registrationController");
 var notesController = require("./src/controllers/notesController");
-var seedData = require("./src/seedData");
-var mongodb = require("mongodb");
-var crypto = require("crypto");
-var hasher = require("./src/hasher");
-var database = require("./src/database");
+var loginController = require("./src/controllers/loginController");
 
 var dbUrl = "mongodb://localhost:27017/messageBoard";
 
 var app = initialiseApp();
 
+authorisation(
+	passport,
+	localStrategy, 
+	hasher(crypto), 
+	userRepository(database(mongodb, dbUrl))).init(app);
+
 registrationController(
 	app,
 	hasher(crypto),
 	userRepository(database(mongodb, dbUrl))).init();
+loginController(passport).init(app);
 homeController(
 	app, 
 	notesRepository(database(mongodb, dbUrl), seedData())).init();

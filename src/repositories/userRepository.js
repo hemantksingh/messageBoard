@@ -1,5 +1,15 @@
 function userRepository(database) {
 
+	function getUser(username, callback) {
+		database.getDb(function(err, db) {
+			if(err) {
+				callback(err, null);
+			} else {
+				db.users.findOne({username: username}, callback);	
+			}
+		});
+	}
+
 	function addUser(userToAdd, callback) {
 		database.getDb(function(err, db){
 			if(err) {
@@ -11,6 +21,7 @@ function userRepository(database) {
 	}
 
 	return {
+		getUser: getUser,
 		addUser: addUser
 	};
 }
