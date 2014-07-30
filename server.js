@@ -4,22 +4,27 @@ var bodyParser = require('body-parser');
 var flash = require('connect-flash');
 var cookieSession = require('cookie-session');
 var notesRepository = require("./src/repositories/notesRepository");
+var userRepository = require("./src/repositories/userRepository");
 var homeController = require("./src/controllers/homeController");
 var registrationController = require("./src/controllers/registrationController");
 var notesController = require("./src/controllers/notesController");
 var seedData = require("./src/seedData");
 var mongodb = require("mongodb");
+var crypto = require("crypto");
+var hasher = require("./src/hasher");
 var database = require("./src/database");
 
 var dbUrl = "mongodb://localhost:27017/messageBoard";
 
 var app = initialiseApp();
 
-registrationController(app).init();
+registrationController(
+	app,
+	hasher(crypto),
+	userRepository(database(mongodb, dbUrl))).init();
 homeController(
 	app, 
 	notesRepository(database(mongodb, dbUrl), seedData())).init();
-
 notesController(
 	app,
 	notesRepository(database(mongodb, dbUrl), seedData())).init();

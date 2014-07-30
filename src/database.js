@@ -14,7 +14,8 @@ function database(mongodb, dbUrl) {
 				} else {
 					theDb = {
 						db: db,
-						notes: db.collection("notes")
+						notes: db.collection("notes"),
+						users: db.collection("users")
 					};
 					callback(null, theDb);
 				}
