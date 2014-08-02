@@ -22,11 +22,12 @@ var dbUrl = "mongodb://localhost:27017/messageBoard";
 
 var app = initialiseApp();
 
-authorisation(
-	passport,
-	localStrategy, 
-	hasher(crypto), 
-	userRepository(database(mongodb, dbUrl))).init(app);
+var auth = authorisation(
+				passport,
+				localStrategy, 
+				hasher(crypto), 
+				userRepository(database(mongodb, dbUrl)));
+auth.init(app);
 
 registrationController(
 	app,
@@ -34,10 +35,12 @@ registrationController(
 	userRepository(database(mongodb, dbUrl))).init();
 loginController(passport).init(app);
 homeController(
-	app, 
+	app,
+	auth, 
 	notesRepository(database(mongodb, dbUrl), seedData())).init();
 notesController(
 	app,
+	auth,
 	notesRepository(database(mongodb, dbUrl), seedData())).init();
 
 

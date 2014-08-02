@@ -8,7 +8,7 @@ function authorisation(passport, localStrategy, hasher, userRepository) {
 		passport.deserializeUser(function(key, callback) {
 			userRepository.getUser(key, function(err, user) {
 				if(err) {
-					callback(null, false, {message: "Failed to retrive user"});
+					callback(null, false, {message: "Failed to retrieve user"});
 				} else {
 					callback(null, user);
 				}
@@ -16,6 +16,22 @@ function authorisation(passport, localStrategy, hasher, userRepository) {
 		});
 		app.use(passport.initialize());
 		app.use(passport.session());
+	}
+
+	function ensureAuthenticated(req, res, callback) {
+		if(req.isAuthenticated()) {
+			callback();
+		} else {
+			res.redirect("/login");
+		}
+	}
+
+	function ensureApiAuthenticated(req, res, callback) {
+		if(req.isAuthenticated()) {
+			callback();
+		} else {
+			res.send(401, "Not authorised.");
+		}
 	}
 
 	function verifyUser(username, password, callback) {
@@ -32,7 +48,9 @@ function authorisation(passport, localStrategy, hasher, userRepository) {
 	}
 
 	return {
-		init: init
+		init: init,
+		ensureAuthenticated: ensureAuthenticated,
+		ensureApiAuthenticated: ensureApiAuthenticated
 	};
 }
 
