@@ -17,14 +17,20 @@
 					});
 
 				var socket = io.connect();
-				socket.on("showThis", function(msg) {
-					alert(msg);
-				})
+
+				socket.emit("join category", categoryName);
+				socket.on("broadcast note", function(note) {
+					$scope.notes.push(note);
+					$scope.$apply();
+				});
+
 				$scope.save = function() {
 					$http.post(notesUrl, $scope.newNote)
 						.then(function(result) {
 							$scope.notes.push(result.data);
 							$scope.newNote = createNote();
+							socket.emit("noteAdded", 
+								{category: categoryName, note: result.data});
 						}, function(err){
 							alert('Failed to create the note.');
 						});
