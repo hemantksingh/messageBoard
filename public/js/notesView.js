@@ -16,6 +16,10 @@
 						alert("Failed to retreive notes.");
 					});
 
+				var socket = io.connect();
+				socket.on("showThis", function(msg) {
+					alert(msg);
+				})
 				$scope.save = function() {
 					$http.post(notesUrl, $scope.newNote)
 						.then(function(result) {

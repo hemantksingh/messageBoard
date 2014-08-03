@@ -8,9 +8,11 @@ var mongodb = require("mongodb");
 var crypto = require("crypto");
 var passport = require("passport");
 var localStrategy = require("passport-local").Strategy;
+var socketio = require("socket.io");
 var hasher = require("./src/hasher");
 var database = require("./src/database");
 var authorisation = require("./src/authorisation");
+var updater = require("./src/updater");
 var notesRepository = require("./src/repositories/notesRepository");
 var userRepository = require("./src/repositories/userRepository");
 var homeController = require("./src/controllers/homeController");
@@ -43,13 +45,12 @@ notesController(
 	auth,
 	notesRepository(database(mongodb, dbUrl), seedData())).init();
 
-
-
 var server = http.createServer(app);
 // port 80 is a public facing web server.
 server.listen(3000); 
 console.log("Server started at port:3000");
 
+updater(socketio).init(server);
 
 function initialiseApp() {
 	var app = express();
