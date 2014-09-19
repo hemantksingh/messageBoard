@@ -4,7 +4,7 @@
   "description": "A message board based on sticky notes.",
   "main": "./src/server.js",
   "scripts": {
-    "test": "testBoard"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",

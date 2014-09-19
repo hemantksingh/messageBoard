@@ -9,6 +9,10 @@ function loginController(passport) {
 		});
 
 		app.post("/login", function(req, res, callback) {
+			// Typically login uses a server side route which is a submitted form. 
+			// In this case you do not have to tell passport to login the user, it does it automatically.
+			// Since this login is using an xmlhttprequest (xhr) post, login is invoked explicitly.
+
 			var authFunction = passport.authenticate("local", 
 				function(err, user, info) {
 					if(err) {
